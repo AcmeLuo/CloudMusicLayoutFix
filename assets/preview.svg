@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="420" viewBox="0 0 1000 420" role="img" aria-label="NetEase Cloud Music layout: primary monitor vs secondary monitor">
+  <rect width="1000" height="420" fill="#ffffff"/>
+  <text x="24" y="30" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#333333">主屏 150% · 1707 CSS px · 正常</text>
+  <text x="520" y="30" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#333333">副屏 125% · 864 CSS px · 错乱</text>
+
+  <!-- ============ left: healthy window ============ -->
+  <rect x="24" y="48" width="428" height="304" fill="#ffffff" stroke="#d9d9e0" stroke-width="1.5"/>
+  <rect x="24" y="48" width="428" height="30" fill="#f2f2f6"/>
+  <line x1="24" y1="78" x2="452" y2="78" stroke="#e4e4ea" stroke-width="1.5"/>
+  <text x="36" y="68" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#555555">网易云音乐</text>
+  <rect x="396" y="63" width="10" height="2" fill="#8a8a94"/>
+  <rect x="414" y="57" width="10" height="10" fill="none" stroke="#8a8a94" stroke-width="1.5"/>
+  <line x1="432" y1="57" x2="442" y2="67" stroke="#8a8a94" stroke-width="1.5"/>
+  <line x1="442" y1="57" x2="432" y2="67" stroke="#8a8a94" stroke-width="1.5"/>
+  <rect x="24" y="78" width="90" height="240" fill="#fafafc"/>
+  <line x1="114" y1="78" x2="114" y2="318" stroke="#e6e6ec" stroke-width="1.5"/>
+  <rect x="36" y="96" width="56" height="8" fill="#e9eaf0"/>
+  <rect x="36" y="116" width="44" height="8" fill="#e9eaf0"/>
+  <rect x="36" y="136" width="50" height="8" fill="#e9eaf0"/>
+  <rect x="126" y="96" width="300" height="8" fill="#eceef3"/>
+  <rect x="126" y="116" width="220" height="8" fill="#eceef3"/>
+  <rect x="126" y="136" width="260" height="8" fill="#eceef3"/>
+  <rect x="24" y="318" width="428" height="34" fill="#f7f7fa"/>
+  <line x1="24" y1="318" x2="452" y2="318" stroke="#e6e6ec" stroke-width="1.5"/>
+  <rect x="34" y="324" width="22" height="22" fill="#e2e5ec"/>
+  <rect x="62" y="326" width="64" height="6" fill="#e2e5ec"/>
+  <rect x="62" y="336" width="44" height="6" fill="#e2e5ec"/>
+  <circle cx="210" cy="335" r="6" fill="#cfd6e0"/>
+  <circle cx="234" cy="335" r="6" fill="#cfd6e0"/>
+  <circle cx="258" cy="335" r="6" fill="#cfd6e0"/>
+  <circle cx="282" cy="335" r="6" fill="#cfd6e0"/>
+  <circle cx="306" cy="335" r="6" fill="#cfd6e0"/>
+  <circle cx="386" cy="335" r="6" fill="#cfd6e0"/>
+  <circle cx="414" cy="335" r="6" fill="#cfd6e0"/>
+  <rect x="390" y="51" width="58" height="24" rx="4" fill="none" stroke="#1f8a56" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="24" y="380" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#1f8a56">窗口按钮完整可见，播放栏各按钮间距正常</text>
+
+  <!-- ============ right: broken window on the secondary monitor ============ -->
+  <rect x="520" y="48" width="428" height="304" fill="#ffffff" stroke="#d9d9e0" stroke-width="1.5"/>
+  <rect x="520" y="48" width="428" height="30" fill="#f2f2f6"/>
+  <line x1="520" y1="78" x2="948" y2="78" stroke="#e4e4ea" stroke-width="1.5"/>
+  <text x="532" y="68" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#555555">网易云音乐</text>
+  <rect x="520" y="78" width="90" height="240" fill="#fafafc"/>
+  <line x1="610" y1="78" x2="610" y2="318" stroke="#e6e6ec" stroke-width="1.5"/>
+  <rect x="532" y="96" width="56" height="8" fill="#e9eaf0"/>
+  <rect x="532" y="116" width="44" height="8" fill="#e9eaf0"/>
+  <rect x="532" y="136" width="50" height="8" fill="#e9eaf0"/>
+  <rect x="622" y="96" width="300" height="8" fill="#eceef3"/>
+  <rect x="622" y="116" width="220" height="8" fill="#eceef3"/>
+  <rect x="622" y="136" width="260" height="8" fill="#eceef3"/>
+  <rect x="520" y="318" width="428" height="34" fill="#f7f7fa"/>
+  <line x1="520" y1="318" x2="948" y2="318" stroke="#e6e6ec" stroke-width="1.5"/>
+  <rect x="530" y="324" width="22" height="22" fill="#e2e5ec"/>
+  <rect x="558" y="326" width="150" height="6" fill="#e2e5ec"/>
+  <rect x="558" y="336" width="90" height="6" fill="#e2e5ec"/>
+  <circle cx="686" cy="335" r="6" fill="#cfd6e0"/>
+  <circle cx="700" cy="335" r="6" fill="#cfd6e0"/>
+  <circle cx="714" cy="335" r="6" fill="#cfd6e0"/>
+  <circle cx="728" cy="335" r="6" fill="#cfd6e0"/>
+  <circle cx="742" cy="335" r="6" fill="#cfd6e0"/>
+  <circle cx="882" cy="335" r="6" fill="#cfd6e0"/>
+  <circle cx="910" cy="335" r="6" fill="#cfd6e0"/>
+  <!-- window buttons pushed outside the visible area -->
+  <rect x="952" y="63" width="10" height="2" fill="#c62a2f"/>
+  <rect x="970" y="57" width="10" height="10" fill="none" stroke="#c62a2f" stroke-width="1.5"/>
+  <line x1="988" y1="57" x2="998" y2="67" stroke="#c62a2f" stroke-width="1.5"/>
+  <line x1="998" y1="57" x2="988" y2="67" stroke="#c62a2f" stroke-width="1.5"/>
+  <line x1="948" y1="48" x2="948" y2="352" stroke="#c62a2f" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <rect x="946" y="51" width="58" height="24" rx="4" fill="none" stroke="#c62a2f" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="948" y1="80" x2="948" y2="94" stroke="#c62a2f" stroke-width="1.5"/>
+  <text x="900" y="108" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#c62a2f">关闭按钮被裁掉</text>
+  <rect x="676" y="325" width="76" height="20" rx="4" fill="none" stroke="#c62a2f" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="700" y1="352" x2="700" y2="366" stroke="#c62a2f" stroke-width="1.5"/>
+  <text x="646" y="380" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#c62a2f">歌名区压住播放按钮</text>
+</svg>

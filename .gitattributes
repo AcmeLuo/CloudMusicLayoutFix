@@ -1,0 +1,9 @@
+# 仓库内统一用 LF，工作区里 Windows 脚本保持 CRLF
+* text=auto eol=lf
+
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+*.cs  text eol=crlf
+
+*.exe binary
+*.png binary

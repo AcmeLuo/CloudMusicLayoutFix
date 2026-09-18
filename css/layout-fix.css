@@ -1,0 +1,241 @@
+/* CloudMusicLayoutFix —— 让网易云音乐界面在窄视口下自适应（保持原生尺寸）
+ *
+ * 背景（2026-09-19 实测，客户端 3.1.40.205461）：
+ *   1) 主内容区 .RightContainer 写死 flex: 1 0 852px（不许收缩），加 204px 侧边栏
+ *      => 界面硬性需要 1056 CSS px 宽度；
+ *   2) body 是 overflow-x: clip，超出的部分直接裁掉；
+ *   3) 标题栏 .HeaderRow 是 CSS grid + 固定列宽，容器变窄时最后一列
+ *      （装着最小化/最大化/关闭的 IconBar）被压成 20px，按钮整体溢出视口。
+ *
+ *   于是当"显示器物理宽度 ÷ 显示缩放比 < 1056"时（本机 1080/1.25=864、
+ *   1600/2=800），关闭按钮消失、标题栏与播放栏元素互相挤压。
+ *
+ * 本文件只做"放开约束"，不改任何字号/控件尺寸，因此界面保持原生 DPI 比例：
+ *   - 主内容区改为可收缩；
+ *   - 标题栏由 grid 改为 flex（保持同样的左右顺序），窗口按钮组靠右固定；
+ *   - 搜索框、昵称等弹性元素先让出宽度；
+ *   - 视口过窄时收起"一起听"、昵称这类非必需入口。
+ */
+
+/* 1. 主内容区允许收缩 */
+[class*='RightContainer'] {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+}
+
+/* 2. 标题栏：grid -> flex，保持同样的排列顺序 */
+[class*='HeaderRow'] {
+  display: flex !important;
+  align-items: center !important;
+  min-width: 0 !important;
+}
+
+/* 标题栏里那些空白的 .draggable 元素是"拖拽窗口"的把手兼间隔，
+ * 原 grid 布局下各有固定宽度；改 flex 后它们会被压成 0，
+ * 导致用户区与右侧图标贴在一起，这里恢复它们的宽度。 */
+[class*='HeaderRow'] > .draggable:empty {
+  flex: 0 0 auto !important;
+  width: 8px !important;
+}
+[class*='HeaderRow'] > .draggable:empty:nth-child(6),
+[class*='HeaderRow'] > .draggable:empty:nth-child(8) {
+  width: 20px !important;
+}
+
+/* "一起听 / 听歌识曲"那个声波图标（.listening）：原 grid 里占 36px 的一列、
+ * 图标居中；改 flex 后盒子会塌成图标本身的 22px、高度也会从 36px 缩成 24px
+ * （hover 高亮比搜索框矮一截）。这里恢复 36×36 的原始盒子与居中方式。 */
+[class*='HeaderRow'] > [class*='listening'] {
+  flex: 0 0 auto !important;
+  width: 36px !important;
+  align-self: stretch !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* 3. 窗口按钮组（最小化/最大化/关闭）永远完整显示；
+ *    弹性空间放在"用户区"左侧，这样头像/昵称仍然紧挨着右侧图标
+ *    （原 grid 布局里用户区就在图标栏左边，若把 auto 放到 IconBar 上，
+ *      昵称会被推到搜索框旁边，位置就不对了） */
+[class*='IconBar'] {
+  flex: 0 0 auto !important;
+}
+
+/* 2b. 后退按钮：原 grid 里占 28px 一列，改 flex 后会被压成 25px；
+ *     固定住它，图标位置才和原版一致。 */
+[class*='HeaderRow'] > [class*='HistoryIcon'] {
+  flex: 0 0 auto !important;
+}
+
+/* 4. 搜索框是最"弹性"的一块，让它先让出宽度 */
+[class*='DomWarpper'] {
+  flex: 1 1 120px !important;
+  width: auto !important;
+  min-width: 88px !important;
+  max-width: 258px !important;
+  overflow: hidden !important;
+}
+[class*='SearchWrapper'] {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+[class*='SearchWrapper'] * {
+  min-width: 0 !important;
+}
+/* 内层输入框本身也是固定 258px，不改它的话会被外层裁掉（看起来像压住右侧徽标） */
+[class*='SearchWrapper'] [class*='cmd-input-wrapper'],
+[class*='SearchWrapper'] [class*='searchbox'] {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* 5. 用户区（头像/昵称/徽标）可收缩，昵称改为截断 */
+[class*='Bar_b2jgnke'] {
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+  margin-left: auto !important;
+  /* 原设计就带 -10px（让它更贴近右侧图标栏），保留以做到与改动前像素一致 */
+  margin-right: -10px !important;
+}
+[class*='Bar_b2jgnke'] [class*='Row_'] {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* 6. 视口很窄时收起非必需入口 */
+@media (max-width: 940px) {
+  [class*='HeaderRow'] [class*='Row_'] {
+    display: none !important;
+  }
+}
+@media (max-width: 880px) {
+  /* 极窄视口：不再隐藏"一起听"，改为把搜索框再让一点 */
+  [class*='DomWarpper'] {
+    min-width: 72px !important;
+  }
+}
+
+/* 7. 底部播放栏：左侧"歌名 + 作者"区（固定 148px）加上它右侧的
+ *    喜欢/评论等图标后，总宽超过了自己 185px 的盒子，在窄屏上会压到
+ *    中间那一排控制键（播放顺序 / 上一首 / 播放 / 下一首 …）。
+ *    窄视口时让歌名区收缩并省略，腾出这段重叠。 */
+[class*='songPlayInfo'] {
+  /* 原版歌名区被左侧 185px 的盒子挤到约 84px（与视口宽度无关），
+   * 于是视口越窄，右侧"喜欢/评论"就越贴近中间那排控制键。
+   * 这里以 84px 为上限保持原样，窄视口下继续收缩，
+   * 保证 喜欢/评论 与中间首键之间留出约 40px 间距：
+   *   左缘 100 + 歌名宽 + 20 + 66(喜欢/评论) + 40 ≤ 50vw - 108(首键左缘) */
+  flex: 0 0 auto !important;
+  width: max(32px, min(84px, calc(50vw - 334px))) !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+[class*='songPlayInfo'] [class*='info-wrapper'],
+[class*='songPlayInfo'] [class*='TitleWrapp'],
+[class*='songPlayInfo'] [class*='main-title'],
+[class*='songPlayInfo'] [class*='author'] {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+[class*='songPlayInfo'] [class*='main-title'],
+[class*='songPlayInfo'] [class*='author'],
+[class*='songPlayInfo'] [class*='TitleWrapp'],
+[class*='songPlayInfo'] [class*='ColumnGap'] {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* 8. 歌曲列表（歌单/专辑/搜索结果等）：数据行被写死成一个固定宽度
+ *    （本机实测 692px，列宽 45+317+200+60+70），窄屏下每一行的最后一列
+ *    "时长"整列落在可视区外、操作列也被压边。表头行本来是自适应的，
+ *    这里让数据行也跟着容器收缩，让各列按 flex 比例压缩。 */
+/* 只在窗口本身窄于设计下限（约 1000 CSS px）时才收缩，
+ * 宽屏下这段规则完全不生效，列表保持原生设计宽度 692px。 */
+@media (max-width: 990px) {
+  [class*='ListWrapper'] {
+    left: 0 !important;
+    right: 0 !important;
+    width: auto !important;
+  }
+  [class*='ReactVirtualized__Grid'],
+  [class*='innerScrollContainer'] {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  [class*='tr-track'] {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+}
+
+/* 9. 设置页顶部的锚点导航：一排链接总宽约 760px，而它是 overflow-x: hidden，
+ *    窄屏下后面的设置项（权限/隐私等）会被整段裁掉。让它们换行显示。 */
+@media (max-width: 1100px) {
+  [class*='cmd-anchor-link-wrapper'] {
+    flex-wrap: wrap !important;
+    row-gap: 4px !important;
+  }
+  /* 设置/资料页里写死宽度的内容块（.right 592px / .preview 616px / 资料编辑 .left 508px），
+   * 窄屏下会超出容器被 overflow 裁掉。 */
+  [class*='Content_'] .right,
+  [class*='Content_'] .table,
+  [class*='Content_'] .preview,
+  [class*='StyledEdit_'] > .left,
+  [class*='StyledLayer_'] {
+    width: auto !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+  /* 设置页内部的表格行/表单/输入框同样是写死宽度，统一兜住上限 */
+  [class*='Content_'] * {
+    max-width: 100% !important;
+  }
+  /* 设置页外层是 nowrap 的 flex（左侧设置导航 + 右侧内容），窄屏下两者并排会顶出视口 */
+  [class*='Content_'] {
+    flex-wrap: wrap !important;
+  }
+  [class*='Content_'] > * {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+  [class*='Content_'] .item,
+  [class*='Content_'] .table-item,
+  [class*='Content_'] form,
+  [class*='Content_'] .global {
+    width: auto !important;
+    min-width: 0 !important;
+  }
+  /* 设置行是 nowrap 的 flex，行内项写死宽度后会顶出容器被裁，允许换行 */
+  [class*='Content_'] .table,
+  [class*='Content_'] .table-item,
+  [class*='Content_'] .right,
+  [class*='Content_'] .item,
+  [class*='Content_'] form {
+    flex-wrap: wrap !important;
+  }
+  [class*='Content_'] [class*='list-item'],
+  [class*='Content_'] [class*='time'],
+  [class*='Content_'] [class*='setting'],
+  [class*='Content_'] [class*='row'] {
+    flex-wrap: wrap !important;
+  }
+  [class*='Content_'] [class*='select-item'] {
+    flex-wrap: wrap !important;
+  }
+  [class*='tr-track'] > [class*='td-title'],
+  [class*='tr-track'] > [class*='td-album'],
+  [class*='tr-track'] > [class*='td-duration'],
+  [class*='tr-track'] > [class*='td-oper'] {
+    min-width: 0 !important;
+  }
+  [class*='tr-track'] [class*='cell'] {
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+}

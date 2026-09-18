@@ -1,0 +1,18 @@
+# 运行期日志
+*.log
+
+# 编译中间产物
+bin/
+obj/
+*.pdb
+*.user
+
+# 编辑器/系统
+.vs/
+.idea/
+.vscode/
+Thumbs.db
+desktop.ini
+
+# 本地文件
+/backup/
